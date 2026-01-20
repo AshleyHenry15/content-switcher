@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: _site
+  title: "Conditional Text Extension Demo"
+
+website:
+  title: "Conditional Text Extension Demo"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: example.qmd
+        text: Example
+
+format:
+  html:
+    theme: cosmo
+    toc: true

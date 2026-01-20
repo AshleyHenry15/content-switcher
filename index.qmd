@@ -1,0 +1,51 @@
+---
+title: "Conditional Text Extension"
+---
+
+# Conditional Text Extension for Quarto
+
+This is a demonstration of the Conditional Text Extension for Quarto. This extension allows you to create content that changes based on user selection.
+
+## Features
+
+- Display different content based on user selection
+- Works with both block-level and inline content
+- Supports multiple versions of content
+- Easy to use with simple markdown syntax
+
+## Example
+
+Check out the [Example](example.qmd) page to see the extension in action.
+
+## Usage
+
+### Block-level content
+
+```markdown
+::: {.conditional-text version="python"}
+Python-specific content
+:::
+
+::: {.conditional-text version="r"}
+R-specific content
+:::
+```
+
+### Inline content
+
+```markdown
+You can use [pandas]{.conditional-text version="python"} [tidyverse]{.conditional-text version="r"} for data manipulation.
+```
+
+### Configuration
+
+```yaml
+conditional-text:
+  default: "python"
+  versions:
+    - id: "python"
+      label: "Python"
+    - id: "r"
+      label: "R"
+  selector-position: "header"
+```

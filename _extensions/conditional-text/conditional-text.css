@@ -1,0 +1,77 @@
+/* conditional-text.css */
+.conditional-text-selector {
+  display: inline-flex;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--quarto-body-bg, #ffffff);
+  border-radius: 0.25rem;
+  border: 1px solid var(--quarto-border-color, #dee2e6);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.conditional-text-selector label {
+  margin-right: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--quarto-body-color, #212529);
+  white-space: nowrap;
+}
+
+.conditional-text-selector select {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--quarto-form-border, #ced4da);
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  color: #212529;
+  font-size: 0.9rem;
+  font-family: inherit;
+  appearance: auto;
+  min-width: 120px;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.conditional-text-selector select:hover {
+  border-color: var(--quarto-form-active-border, #adb5bd);
+}
+
+.conditional-text-selector select:focus {
+  outline: 0;
+  border-color: var(--quarto-form-active-border, #86b7fe);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Hide conditional content */
+.conditional-text-hidden {
+  display: none !important;
+}
+
+/* Transitions for smooth version switching */
+.conditional-text {
+  transition: opacity 0.2s ease;
+}
+
+/* Support for dark mode */
+@media (prefers-color-scheme: dark) {
+  .conditional-text-selector {
+    background-color: var(--quarto-body-bg, #1a1a1a);
+    border-color: var(--quarto-border-color, #444);
+  }
+
+  .conditional-text-selector select {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #495057;
+  }
+}
+
+/* Explicitly override any theme styles that might cause issues */
+.conditional-text-selector select,
+.conditional-text-selector select option {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
