@@ -25,7 +25,7 @@ This document demonstrates the content switcher extension for Quarto. Select a v
 Here's how to read data from a CSV file:
 
 ::: {.content-switcher version="v2026.01"}
-### version 2026.01.0 Example
+### version 2026.01.0 Example {.unlisted}
 
 Use pandas to read CSV data:
 
@@ -37,7 +37,7 @@ print(data.head())
 :::
 
 ::: {.content-switcher version="v2.0"}
-### version 2.0 example
+### version 2.0 example {.unlisted}
 
 Use readr to read CSV data:
 
@@ -49,7 +49,7 @@ head(data)
 :::
 
 ::: {.content-switcher version="v3.0"}
-### version 3.0 Example
+### version 3.0 Example {.unlisted}
 
 Use CSV.jl to read CSV data:
 
