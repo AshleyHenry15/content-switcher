@@ -1,10 +1,10 @@
 project:
   type: website
   output-dir: _site
-  title: "Conditional Text Extension Demo"
+  title: "Content Switcher Extension Demo"
 
 website:
-  title: "Conditional Text Extension Demo"
+  title: "Content Switcher Extension Demo"
   navbar:
     left:
       - href: index.qmd

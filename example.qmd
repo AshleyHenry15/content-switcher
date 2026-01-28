@@ -1,30 +1,30 @@
 ---
-title: "Conditional Text Extension Example"
+title: "Content Switcher Extension Example"
 format: html
 filters:
-  - conditional-text
-conditional-text:
-  default: "v1.0"
+  - content-switcher
+content-switcher:
+  default: "v2026.01"
   versions:
     - id: "v2026.01"
       label: "2026.01.0"
     - id: "v2.0"
-      label: "v2.0"
+      label: "2.0"
     - id: "v3.0"
-      label: "v3.0"
+      label: "3.0"
   selector-position: "header"
   selector-label: "Version:"
 ---
 
-# Conditional Text Extension Demo
+# Content Switcher Extension Demo
 
-This document demonstrates the conditional text extension for Quarto. Select a language above to see customized content.
+This document demonstrates the content switcher extension for Quarto. Select a version above to see customized content.
 
-## Block-level Conditional Content
+## Block-level Content Switching
 
 Here's how to read data from a CSV file:
 
-::: {.conditional-text version="v2026.01"}
+::: {.content-switcher version="v2026.01"}
 ### version 2026.01.0 Example
 
 Use pandas to read CSV data:
@@ -36,7 +36,7 @@ print(data.head())
 ```
 :::
 
-::: {.conditional-text version="v2.0"}
+::: {.content-switcher version="v2.0"}
 ### version 2.0 example
 
 Use readr to read CSV data:
@@ -48,7 +48,7 @@ head(data)
 ```
 :::
 
-::: {.conditional-text version="v3.0"}
+::: {.content-switcher version="v3.0"}
 ### version 3.0 Example
 
 Use CSV.jl to read CSV data:
@@ -60,27 +60,27 @@ first(data, 5)
 ```
 :::
 
-## Inline Conditional Content
+## Inline Content Switching
 
-You can also use conditional text inline. For example, you might want to use
-[pandas]{.conditional-text version="v2026.01"}
-[readr]{.conditional-text version="v2.0"}
-[CSV.jl]{.conditional-text version="v3.0"}
+You can also use content switching inline. For example, you might want to use
+[pandas]{.content-switcher version="v2026.01"}
+[readr]{.content-switcher version="v2.0"}
+[CSV.jl]{.content-switcher version="v3.0"}
 to read your data files.
 
 ## Additional Features
 
-You can apply custom CSS classes to conditional blocks:
+You can apply custom CSS classes to content switcher blocks:
 
-::: {.conditional-text version="v1.0" .callout-note}
-This is a v1.0-specific note with custom styling.
+::: {.content-switcher version="v2026.01" .callout-note}
+This is a 2026.01.0-specific note with custom styling.
 :::
 
-::: {.conditional-text version="v2.0" .callout-note}
-This is an R-specific note with custom styling.
+::: {.content-switcher version="v2.0" .callout-note}
+This is a v2.0-specific note with custom styling.
 :::
 
-::: {.conditional-text version="v3.0" .callout-note}
+::: {.content-switcher version="v3.0" .callout-note}
 This is a v3.0-specific note with custom styling.
 :::
 
@@ -88,8 +88,8 @@ This is a v3.0-specific note with custom styling.
 
 Link directly to a specific version:
 
-- [View v1.0 version](example.html?version=v1.0)
-- [View v2.0 version](example.html?version=r)
-- [View v3.0 version](example.html?version=v3.0)
+- [View 2026.01.0 version](example.html?version=v2026.01)
+- [View 2.0 version](example.html?version=v2.0)
+- [View 3.0 version](example.html?version=v3.0)
 
 Your selection is saved in localStorage and persists across page visits.

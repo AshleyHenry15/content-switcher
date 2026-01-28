@@ -1,5 +1,5 @@
-/* conditional-text.css */
-.conditional-text-selector {
+/* content-switcher.css */
+.content-switcher-selector {
   display: inline-flex;
   align-items: center;
   margin: 1rem 0;
@@ -12,7 +12,7 @@
   z-index: 10;
 }
 
-.conditional-text-selector label {
+.content-switcher-selector label {
   margin-right: 0.75rem;
   font-weight: 600;
   font-size: 0.9rem;
@@ -20,7 +20,7 @@
   white-space: nowrap;
 }
 
-.conditional-text-selector select {
+.content-switcher-selector select {
   padding: 0.25rem 0.75rem;
   border: 1px solid var(--quarto-form-border, #ced4da);
   border-radius: 0.25rem;
@@ -34,29 +34,29 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.conditional-text-selector select:hover {
+.content-switcher-selector select:hover {
   border-color: var(--quarto-form-active-border, #adb5bd);
 }
 
-.conditional-text-selector select:focus {
+.content-switcher-selector select:focus {
   outline: 0;
   border-color: var(--quarto-form-active-border, #86b7fe);
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Hide conditional content */
-.conditional-text-hidden {
+/* Hide content switcher content */
+.content-switcher-hidden {
   display: none !important;
 }
 
 /* Support for dark mode */
 @media (prefers-color-scheme: dark) {
-  .conditional-text-selector {
+  .content-switcher-selector {
     background-color: var(--quarto-body-bg, #1a1a1a);
     border-color: var(--quarto-border-color, #444);
   }
 
-  .conditional-text-selector select {
+  .content-switcher-selector select {
     background-color: var(--quarto-body-bg, #2a2a2a);
     color: var(--quarto-body-color, #e0e0e0);
     border-color: var(--quarto-border-color, #495057);
