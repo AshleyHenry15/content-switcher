@@ -29,7 +29,7 @@ Here's how to read data from a CSV file:
 
 Use pandas to read CSV data:
 
-```v1.0
+```python
 import pandas as pd
 data = pd.read_csv('data.csv')
 print(data.head())
@@ -53,7 +53,7 @@ head(data)
 
 Use CSV.jl to read CSV data:
 
-```v3.0
+```julia
 using CSV, DataFrames
 data = CSV.read("data.csv", DataFrame)
 first(data, 5)

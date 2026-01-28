@@ -9,10 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
     blocks.forEach(block => {
       if (block.dataset.version === version) {
         block.classList.remove("conditional-text-hidden");
-        block.dataset.visible = "true";
       } else {
         block.classList.add("conditional-text-hidden");
-        block.dataset.visible = "false";
       }
     });
 
@@ -27,15 +25,12 @@ document.addEventListener("DOMContentLoaded", function() {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVersion = urlParams.get('version');
   const savedVersion = localStorage.getItem("conditional-text-selected-version");
+  const validOptions = Array.from(selector.options).map(opt => opt.value);
 
-  // Helper to check if version exists
-  const versionExists = (version) =>
-    Array.from(selector.options).some(option => option.value === version);
-
-  if (urlVersion && versionExists(urlVersion)) {
+  if (urlVersion && validOptions.includes(urlVersion)) {
     selector.value = urlVersion;
     switchVersion(urlVersion);
-  } else if (savedVersion && versionExists(savedVersion)) {
+  } else if (savedVersion && validOptions.includes(savedVersion)) {
     selector.value = savedVersion;
     switchVersion(savedVersion);
   }

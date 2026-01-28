@@ -102,31 +102,20 @@ end
 
 -- Helper function to process conditional elements (both Div and Span)
 local function process_conditional_element(element)
-  -- Check if element has version attribute or conditional-text class
-  local version = element.attributes["version"]
-  local has_class = element.classes:includes("conditional-text")
-
-  if not version and not has_class then
+  -- Only process elements with conditional-text class
+  if not element.classes:includes("conditional-text") then
     return element
   end
 
-  -- Add class if not present
-  if not has_class then
-    element.classes:insert("conditional-text")
-  end
-
   -- Get version (default if not specified)
-  version = version or default_version
+  local version = element.attributes["version"] or default_version
   add_version_if_new(version)
 
   -- For HTML output, set up for dynamic switching
   if quarto.doc.isFormat("html") then
     element.attributes["data-version"] = version
 
-    if version == default_version then
-      element.attributes["data-visible"] = "true"
-    else
-      element.attributes["data-visible"] = "false"
+    if version ~= default_version then
       element.classes:insert("conditional-text-hidden")
     end
 
@@ -134,7 +123,11 @@ local function process_conditional_element(element)
   end
 
   -- For non-HTML output, only show the default version
-  return version == default_version and element or {}
+  if version == default_version then
+    return element
+  else
+    return {}
+  end
 end
 
 -- Process conditional text divs
