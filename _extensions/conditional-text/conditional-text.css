@@ -63,15 +63,8 @@
   }
 
   .conditional-text-selector select {
-    background-color: #ffffff;
-    color: #212529;
-    border-color: #495057;
+    background-color: var(--quarto-body-bg, #2a2a2a);
+    color: var(--quarto-body-color, #e0e0e0);
+    border-color: var(--quarto-border-color, #495057);
   }
-}
-
-/* Explicitly override any theme styles that might cause issues */
-.conditional-text-selector select,
-.conditional-text-selector select option {
-  background-color: #ffffff !important;
-  color: #212529 !important;
 }

@@ -14,5 +14,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: cosmo
+      dark: cyborg
     toc: true
