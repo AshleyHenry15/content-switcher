@@ -4,27 +4,28 @@ format: html
 filters:
   - conditional-text
 conditional-text:
-  default: "python"
+  default: "v1.0"
   versions:
-    - id: "python"
-      label: "Python"
-    - id: "r"
-      label: "R"
-    - id: "julia"
-      label: "Julia"
+    - id: "v2026.01"
+      label: "2026.01.0"
+    - id: "v2.0"
+      label: "v2.0"
+    - id: "v3.0"
+      label: "v3.0"
   selector-position: "header"
+  selector-label: "Version:"
 ---
 
 # Conditional Text Extension Demo
 
-This document demonstrates the conditional text extension for Quarto. You can select different versions of content using the version selector above.
+This document demonstrates the conditional text extension for Quarto. Select a language above to see customized content.
 
 ## Block-level Conditional Content
 
-Here's how to read data from a CSV file in different languages:
+Here's how to read data from a CSV file:
 
-::: {.conditional-text version="python"}
-### Python Example
+::: {.conditional-text version="v2026.01"}
+### version 2026.01.0 Example
 
 Use pandas to read CSV data:
 
@@ -35,8 +36,8 @@ print(data.head())
 ```
 :::
 
-::: {.conditional-text version="r"}
-### R Example
+::: {.conditional-text version="v2.0"}
+### version 2.0 example
 
 Use readr to read CSV data:
 
@@ -47,8 +48,8 @@ head(data)
 ```
 :::
 
-::: {.conditional-text version="julia"}
-### Julia Example
+::: {.conditional-text version="v3.0"}
+### version 3.0 Example
 
 Use CSV.jl to read CSV data:
 
@@ -62,86 +63,33 @@ first(data, 5)
 ## Inline Conditional Content
 
 You can also use conditional text inline. For example, you might want to use
-[pandas]{.conditional-text version="python"}
-[readr]{.conditional-text version="r"}
-[CSV.jl]{.conditional-text version="julia"}
+[pandas]{.conditional-text version="v2026.01"}
+[readr]{.conditional-text version="v2.0"}
+[CSV.jl]{.conditional-text version="v3.0"}
 to read your data files.
 
-## Different Styling
+## Additional Features
 
-You can apply different styling to your conditional blocks:
+You can apply custom CSS classes to conditional blocks:
 
-::: {.conditional-text version="python" .alert .alert-primary}
-This is a Python-specific note with special styling.
+::: {.conditional-text version="v1.0" .callout-note}
+This is a v1.0-specific note with custom styling.
 :::
 
-::: {.conditional-text version="r" .alert .alert-info}
-This is an R-specific note with different styling.
+::: {.conditional-text version="v2.0" .callout-note}
+This is an R-specific note with custom styling.
 :::
 
-::: {.conditional-text version="julia" .alert .alert-warning}
-This is a Julia-specific note with different styling.
-:::
-
-## Operating System Specific Instructions
-
-::: {.conditional-text version="windows"}
-### Windows Setup
-
-To install the package on Windows:
-
-```bash
-pip install package
-```
-:::
-
-::: {.conditional-text version="mac"}
-### Mac Setup
-
-To install the package on Mac:
-
-```bash
-pip3 install package
-```
-:::
-
-::: {.conditional-text version="linux"}
-### Linux Setup
-
-To install the package on Linux:
-
-```bash
-sudo pip install package
-```
-:::
-
-## Experience Levels
-
-::: {.conditional-text version="beginner"}
-### Beginner Explanation
-
-In simple terms, this function calculates the average of all values.
-:::
-
-::: {.conditional-text version="advanced"}
-### Advanced Explanation
-
-This function computes the arithmetic mean, handling missing values by default and using a numerically stable algorithm for floating-point operations.
+::: {.conditional-text version="v3.0" .callout-note}
+This is a v3.0-specific note with custom styling.
 :::
 
 ## URL Parameters
 
-You can link directly to a specific version using URL parameters:
+Link directly to a specific version:
 
-- [View Python version](example.html?version=python)
-- [View R version](example.html?version=r)
-- [View Julia version](example.html?version=julia)
-- [View Windows instructions](example.html?version=windows)
-- [View Mac instructions](example.html?version=mac)
-- [View Linux instructions](example.html?version=linux)
-- [View Beginner explanation](example.html?version=beginner)
-- [View Advanced explanation](example.html?version=advanced)
+- [View v1.0 version](example.html?version=v1.0)
+- [View v2.0 version](example.html?version=r)
+- [View v3.0 version](example.html?version=v3.0)
 
-## Keyboard Shortcuts
-
-- Press `Alt+V` to focus the version selector
+Your selection is saved in localStorage and persists across page visits.

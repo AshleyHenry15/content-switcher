@@ -6,6 +6,7 @@ local default_version = "default"
 local versions = {}
 local selector_position = "header" -- Where to place the selector (header, top, before-content)
 local show_selector = true -- Whether to show the version selector
+local selector_label = "Version:" -- Label text for the selector
 
 -- Parse configuration from document metadata
 function get_config(meta)
@@ -43,6 +44,11 @@ function get_config(meta)
     if config["show-selector"] ~= nil then
       show_selector = config["show-selector"]
     end
+
+    -- Get selector label if specified
+    if config["selector-label"] ~= nil then
+      selector_label = pandoc.utils.stringify(config["selector-label"])
+    end
   end
 
   -- If no versions defined but we have conditional blocks, add defaults based on what we find
@@ -77,7 +83,7 @@ function generate_version_selector()
   end
 
   local html = '<div class="conditional-text-selector">\n'
-  html = html .. '  <label for="conditional-text-select">Version:</label>\n'
+  html = html .. '  <label for="conditional-text-select">' .. selector_label .. '</label>\n'
   html = html .. '  <select id="conditional-text-select" aria-label="Select content version">\n'
 
   for i, version in ipairs(versions) do
@@ -94,146 +100,44 @@ function generate_version_selector()
   return html
 end
 
+-- Helper function to process conditional elements (both Div and Span)
+local function process_conditional_element(element)
+  -- Only process elements with conditional-text class
+  if not element.classes:includes("conditional-text") then
+    return element
+  end
+
+  -- Get version (default if not specified)
+  local version = element.attributes["version"] or default_version
+  add_version_if_new(version)
+
+  -- For HTML output, set up for dynamic switching
+  if quarto.doc.isFormat("html") then
+    element.attributes["data-version"] = version
+
+    if version ~= default_version then
+      element.classes:insert("conditional-text-hidden")
+    end
+
+    return element
+  end
+
+  -- For non-HTML output, only show the default version
+  if version == default_version then
+    return element
+  else
+    return {}
+  end
+end
+
 -- Process conditional text divs
 function Div(div)
-  -- Process div with conditional-text class
-  if div.classes:includes("conditional-text") then
-    -- Get version from attributes
-    local version = div.attributes["version"] or default_version
-
-    -- Add this version to our list if it's new
-    add_version_if_new(version)
-
-    -- For HTML output, set up for dynamic switching
-    if quarto.doc.isFormat("html") then
-      -- Set data attribute for version
-      div.attributes["data-version"] = version
-
-      -- Determine initial visibility
-      if version == default_version then
-        div.attributes["data-visible"] = "true"
-      else
-        div.attributes["data-visible"] = "false"
-        div.classes:insert("conditional-text-hidden")
-      end
-
-      return div
-    end
-
-    -- For non-HTML output, only show the default version
-    if version == default_version then
-      return div
-    else
-      -- Return empty to hide this div
-      return {}
-    end
-  end
-
-  -- Also check for fenced div syntax with attribute
-  if div.attributes["version"] ~= nil then
-    local version = div.attributes["version"]
-    div.classes:insert("conditional-text")
-
-    -- Add this version to our list if it's new
-    add_version_if_new(version)
-
-    -- For HTML output, set up for dynamic switching
-    if quarto.doc.isFormat("html") then
-      -- Set data attribute for version
-      div.attributes["data-version"] = version
-
-      -- Determine initial visibility
-      if version == default_version then
-        div.attributes["data-visible"] = "true"
-      else
-        div.attributes["data-visible"] = "false"
-        div.classes:insert("conditional-text-hidden")
-      end
-
-      return div
-    end
-
-    -- For non-HTML output, only show the default version
-    if version == default_version then
-      return div
-    else
-      -- Return empty to hide this div
-      return {}
-    end
-  end
-
-  return div
+  return process_conditional_element(div)
 end
 
 -- Process inline conditional text (spans)
 function Span(span)
-  -- Process span with conditional-text class
-  if span.classes:includes("conditional-text") then
-    -- Get version from attributes
-    local version = span.attributes["version"] or default_version
-
-    -- Add this version to our list if it's new
-    add_version_if_new(version)
-
-    -- For HTML output, set up for dynamic switching
-    if quarto.doc.isFormat("html") then
-      -- Set data attribute for version
-      span.attributes["data-version"] = version
-
-      -- Determine initial visibility
-      if version == default_version then
-        span.attributes["data-visible"] = "true"
-      else
-        span.attributes["data-visible"] = "false"
-        span.classes:insert("conditional-text-hidden")
-      end
-
-      return span
-    end
-
-    -- For non-HTML output, only show the default version
-    if version == default_version then
-      return span
-    else
-      -- Return empty to hide this span
-      return {}
-    end
-  end
-
-  -- Also check for attribute syntax
-  if span.attributes["version"] ~= nil then
-    local version = span.attributes["version"]
-    span.classes:insert("conditional-text")
-
-    -- Add this version to our list if it's new
-    add_version_if_new(version)
-
-    -- For HTML output, set up for dynamic switching
-    if quarto.doc.isFormat("html") then
-      -- Set data attribute for version
-      span.attributes["data-version"] = version
-
-      -- Determine initial visibility
-      if version == default_version then
-        span.attributes["data-visible"] = "true"
-      else
-        span.attributes["data-visible"] = "false"
-        span.classes:insert("conditional-text-hidden")
-      end
-
-      return span
-    end
-
-    -- For non-HTML output, only show the default version
-    if version == default_version then
-      return span
-    else
-      -- Return empty to hide this span
-      return {}
-    end
-  end
-
-  return span
+  return process_conditional_element(span)
 end
 
 -- Main filter function
@@ -257,42 +161,26 @@ function Pandoc(doc)
 
     -- If we have versions and show_selector is true, inject selector HTML
     if #versions > 0 and show_selector then
-      -- Determine where to add the selector
+      local insert_position = 1  -- Default to top
+
+      -- Find position based on selector_position setting
       if selector_position == "header" then
-        -- Add after first header (typical for Quarto docs)
-        local first_header_idx = -1
         for i, block in ipairs(doc.blocks) do
           if block.t == "Header" then
-            first_header_idx = i
+            insert_position = i + 1
             break
           end
         end
-
-        if first_header_idx > 0 then
-          table.insert(doc.blocks, first_header_idx + 1, pandoc.RawBlock("html", selector_html))
-        else
-          table.insert(doc.blocks, 1, pandoc.RawBlock("html", selector_html))
-        end
-      elseif selector_position == "top" then
-        -- Add at the very top
-        table.insert(doc.blocks, 1, pandoc.RawBlock("html", selector_html))
       elseif selector_position == "before-content" then
-        -- Look for a div with class quarto-content
-        local content_div_idx = -1
         for i, block in ipairs(doc.blocks) do
           if block.t == "Div" and block.classes:includes("quarto-content") then
-            content_div_idx = i
+            insert_position = i
             break
           end
         end
-
-        if content_div_idx > 0 then
-          table.insert(doc.blocks, content_div_idx, pandoc.RawBlock("html", selector_html))
-        else
-          -- Fallback to top
-          table.insert(doc.blocks, 1, pandoc.RawBlock("html", selector_html))
-        end
       end
+
+      table.insert(doc.blocks, insert_position, pandoc.RawBlock("html", selector_html))
     end
   end
 
