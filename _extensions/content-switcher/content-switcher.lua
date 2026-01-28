@@ -1,5 +1,5 @@
--- conditional-text.lua
--- A filter for conditional text in Quarto documents
+-- content-switcher.lua
+-- A filter for content switching in Quarto documents
 
 -- Define defaults
 local default_version = "default"
@@ -11,7 +11,7 @@ local selector_label = "Version:" -- Label text for the selector
 -- Parse configuration from document metadata
 function get_config(meta)
   -- Get config from document metadata
-  local config = meta["conditional-text"]
+  local config = meta["content-switcher"]
 
   if config ~= nil then
     -- Get default version if specified
@@ -82,9 +82,9 @@ function generate_version_selector()
     return ""
   end
 
-  local html = '<div class="conditional-text-selector">\n'
-  html = html .. '  <label for="conditional-text-select">' .. selector_label .. '</label>\n'
-  html = html .. '  <select id="conditional-text-select" aria-label="Select content version">\n'
+  local html = '<div class="content-switcher-selector">\n'
+  html = html .. '  <label for="content-switcher-select">' .. selector_label .. '</label>\n'
+  html = html .. '  <select id="content-switcher-select" aria-label="Select content version">\n'
 
   for i, version in ipairs(versions) do
     local selected = ""
@@ -102,8 +102,8 @@ end
 
 -- Helper function to process conditional elements (both Div and Span)
 local function process_conditional_element(element)
-  -- Only process elements with conditional-text class
-  if not element.classes:includes("conditional-text") then
+  -- Only process elements with content-switcher class
+  if not element.classes:includes("content-switcher") then
     return element
   end
 
@@ -116,7 +116,7 @@ local function process_conditional_element(element)
     element.attributes["data-version"] = version
 
     if version ~= default_version then
-      element.classes:insert("conditional-text-hidden")
+      element.classes:insert("content-switcher-hidden")
     end
 
     return element
@@ -153,10 +153,10 @@ function Pandoc(doc)
 
     -- Inject version selector and JavaScript
     quarto.doc.addHtmlDependency({
-      name = "conditional-text",
+      name = "content-switcher",
       version = "0.1.0",
-      scripts = {"conditional-text.js"},
-      stylesheets = {"conditional-text.css"}
+      scripts = {"content-switcher.js"},
+      stylesheets = {"content-switcher.css"}
     })
 
     -- If we have versions and show_selector is true, inject selector HTML

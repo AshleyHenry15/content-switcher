@@ -1,10 +1,10 @@
 ---
-title: "Conditional Text Extension"
+title: "Content Switcher Extension"
 ---
 
-# Conditional Text Extension for Quarto
+# Content Switcher Extension for Quarto
 
-This is a demonstration of the Conditional Text Extension for Quarto. This extension allows you to create content that changes based on user selection.
+This is a demonstration of the Content Switcher Extension for Quarto. This extension allows you to create content that changes based on user selection.
 
 ## Features
 
@@ -22,11 +22,11 @@ Check out the [Example](example.qmd) page to see the extension in action.
 ### Block-level content
 
 ```markdown
-::: {.conditional-text version="python"}
+::: {.content-switcher version="python"}
 Python-specific content
 :::
 
-::: {.conditional-text version="r"}
+::: {.content-switcher version="r"}
 R-specific content
 :::
 ```
@@ -34,13 +34,13 @@ R-specific content
 ### Inline content
 
 ```markdown
-You can use [pandas]{.conditional-text version="python"} [tidyverse]{.conditional-text version="r"} for data manipulation.
+You can use [pandas]{.content-switcher version="python"} [tidyverse]{.content-switcher version="r"} for data manipulation.
 ```
 
 ### Configuration
 
 ```yaml
-conditional-text:
+content-switcher:
   default: "python"
   versions:
     - id: "python"
