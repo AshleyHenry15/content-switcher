@@ -22,7 +22,7 @@ function get_config(meta)
 
     -- Get versions if specified
     if config["versions"] ~= nil then
-      for i, version in ipairs(config["versions"]) do
+      for _, version in ipairs(config["versions"]) do
         if type(version) == "table" then
           -- Handle detailed version specification with ID and label
           local id = pandoc.utils.stringify(version["id"])
@@ -72,7 +72,7 @@ function add_version_if_new(version)
   end
 
   -- Check if this version already exists
-  for i, v in ipairs(versions) do
+  for _, v in ipairs(versions) do
     if v.id == version then
       return -- Already exists
     end
@@ -93,7 +93,7 @@ function generate_version_selector()
   html = html .. '  <label for="content-switcher-select">' .. selector_label .. '</label>\n'
   html = html .. '  <select id="content-switcher-select" aria-label="Select content version">\n'
 
-  for i, version in ipairs(versions) do
+  for _, version in ipairs(versions) do
     local selected = ""
     if version.id == default_version then
       selected = ' selected="selected"'
@@ -157,16 +157,16 @@ function process_document(doc)
 
       -- Find position based on selector_position setting
       if selector_position == "header" then
-        for i, block in ipairs(doc.blocks) do
+        for idx, block in ipairs(doc.blocks) do
           if block.t == "Header" then
-            insert_position = i + 1
+            insert_position = idx + 1
             break
           end
         end
       elseif selector_position == "before-content" then
-        for i, block in ipairs(doc.blocks) do
+        for idx, block in ipairs(doc.blocks) do
           if block.t == "Div" and block.classes:includes("quarto-content") then
-            insert_position = i
+            insert_position = idx
             break
           end
         end
