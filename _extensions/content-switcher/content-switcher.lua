@@ -144,11 +144,10 @@ end
 
 -- Main filter function
 function process_document(doc)
-  -- Only for HTML, inject selector and JavaScript
-  if quarto.doc.is_format("html") then
+  -- Only for HTML with versions, inject selector and JavaScript
+  if quarto.doc.is_format("html") and #versions > 0 then
     local selector_html = generate_version_selector()
 
-    -- Inject version selector and JavaScript
     quarto.doc.add_html_dependency({
       name = "content-switcher",
       version = "0.1.0",
@@ -156,8 +155,7 @@ function process_document(doc)
       stylesheets = { "content-switcher.css" }
     })
 
-    -- If we have versions and show_selector is true, inject selector HTML
-    if #versions > 0 and show_selector then
+    if show_selector then
       local insert_position = 1 -- Default to top
 
       -- Find position based on selector_position setting
