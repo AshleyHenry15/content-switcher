@@ -3,17 +3,19 @@ title: "Content Switcher Extension Example"
 format: html
 filters:
   - content-switcher
-content-switcher:
-  default: "v2026.01"
-  versions:
-    - id: "v2026.01"
-      label: "2026.01.0"
-    - id: "v2.0"
-      label: "2.0"
-    - id: "v3.0"
-      label: "3.0"
-  selector-position: "header"
-  selector-label: "Version:"
+extensions:
+  content-switcher:
+    default: "v2026.01"
+    versions:
+      - id: "v2026.01"
+        label: "2026.01.0"
+      - id: "v2.0"
+        label: "2.0"
+      - id: "v3.0"
+        label: "3.0"
+    selector:
+      position: "header"
+      label: "Version:"
 ---
 
 # Content Switcher Extension Demo

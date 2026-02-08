@@ -11,7 +11,8 @@ local selector_label = "Version:"  -- Label text for the selector
 -- Parse configuration from document metadata
 function get_config(meta)
   -- Get config from document metadata
-  local config = meta["content-switcher"]
+  local extensions = meta["extensions"]
+  local config = extensions and extensions["content-switcher"]
 
   if config ~= nil then
     -- Get default version if specified
@@ -35,19 +36,25 @@ function get_config(meta)
       end
     end
 
-    -- Get selector position if specified
-    if config["selector-position"] ~= nil then
-      selector_position = pandoc.utils.stringify(config["selector-position"])
-    end
-
-    -- Get show_selector if specified
-    if config["show-selector"] ~= nil then
-      show_selector = config["show-selector"]
-    end
-
-    -- Get selector label if specified
-    if config["selector-label"] ~= nil then
-      selector_label = pandoc.utils.stringify(config["selector-label"])
+    -- Get selector configuration if specified
+    local selector_config = config["selector"]
+    if selector_config ~= nil then
+      -- Boolean shorthand: selector: true / selector: false
+      local stringified = pandoc.utils.stringify(selector_config)
+      if stringified == "true" or stringified == "false" then
+        show_selector = (stringified == "true")
+      else
+        -- Object form: selector: { position, label, show }
+        if selector_config["position"] ~= nil then
+          selector_position = pandoc.utils.stringify(selector_config["position"])
+        end
+        if selector_config["show"] ~= nil then
+          show_selector = (pandoc.utils.stringify(selector_config["show"]) == "true")
+        end
+        if selector_config["label"] ~= nil then
+          selector_label = pandoc.utils.stringify(selector_config["label"])
+        end
+      end
     end
   end
 
