@@ -112,7 +112,7 @@ local function process_conditional_element(element)
   add_version_if_new(version)
 
   -- For HTML output, set up for dynamic switching
-  if quarto.doc.isFormat("html") then
+  if quarto.doc.is_format("html") then
     element.attributes["data-version"] = version
 
     if version ~= default_version then
@@ -133,11 +133,11 @@ end
 -- Main filter function
 function process_document(doc)
   -- Only for HTML, inject selector and JavaScript
-  if quarto.doc.isFormat("html") then
+  if quarto.doc.is_format("html") then
     local selector_html = generate_version_selector()
 
     -- Inject version selector and JavaScript
-    quarto.doc.addHtmlDependency({
+    quarto.doc.add_html_dependency({
       name = "content-switcher",
       version = "0.1.0",
       scripts = { "content-switcher.js" },
