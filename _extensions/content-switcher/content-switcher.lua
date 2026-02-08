@@ -103,7 +103,9 @@ function generate_version_selector()
     if version.id == default_version then
       selected = ' selected="selected"'
     end
-    html = html .. '    <option value="' .. escape_html(version.id) .. '"' .. selected .. '>' .. escape_html(version.label) .. '</option>\n'
+    html = html ..
+    '    <option value="' ..
+    escape_html(version.id) .. '"' .. selected .. '>' .. escape_html(version.label) .. '</option>\n'
   end
 
   html = html .. '  </select>\n'
