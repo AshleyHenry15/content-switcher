@@ -5,8 +5,8 @@
 local default_version = "default"
 local versions = {}
 local selector_position = "header" -- Where to place the selector (header, top, before-content)
-local show_selector = true -- Whether to show the version selector
-local selector_label = "Version:" -- Label text for the selector
+local show_selector = true         -- Whether to show the version selector
+local selector_label = "Version:"  -- Label text for the selector
 
 -- Parse configuration from document metadata
 function get_config(meta)
@@ -130,23 +130,8 @@ local function process_conditional_element(element)
   end
 end
 
--- Process conditional text divs
-function Div(div)
-  return process_conditional_element(div)
-end
-
--- Process inline conditional text (spans)
-function Span(span)
-  return process_conditional_element(span)
-end
-
 -- Main filter function
-function Meta(meta)
-  get_config(meta)
-  return meta
-end
-
-function Pandoc(doc)
+function process_document(doc)
   -- Only for HTML, inject selector and JavaScript
   if quarto.doc.isFormat("html") then
     local selector_html = generate_version_selector()
@@ -155,13 +140,13 @@ function Pandoc(doc)
     quarto.doc.addHtmlDependency({
       name = "content-switcher",
       version = "0.1.0",
-      scripts = {"content-switcher.js"},
-      stylesheets = {"content-switcher.css"}
+      scripts = { "content-switcher.js" },
+      stylesheets = { "content-switcher.css" }
     })
 
     -- If we have versions and show_selector is true, inject selector HTML
     if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top
+      local insert_position = 1 -- Default to top
 
       -- Find position based on selector_position setting
       if selector_position == "header" then
@@ -189,8 +174,8 @@ end
 
 -- Register the filter functions
 return {
-  { Meta = Meta },
-  { Span = Span },
-  { Div = Div },
-  { Pandoc = Pandoc }
+  { Meta = get_config },
+  { Span = process_conditional_element },
+  { Div = process_conditional_element },
+  { Pandoc = process_document }
 }
