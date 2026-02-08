@@ -83,6 +83,11 @@ function add_version_if_new(version)
   quarto.log.output("Added version: " .. version)
 end
 
+-- Escape special HTML characters
+local function escape_html(str)
+  return str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;")
+end
+
 -- Generate version selector HTML
 function generate_version_selector()
   if #versions == 0 or not show_selector then
@@ -90,7 +95,7 @@ function generate_version_selector()
   end
 
   local html = '<div class="content-switcher-selector">\n'
-  html = html .. '  <label for="content-switcher-select">' .. selector_label .. '</label>\n'
+  html = html .. '  <label for="content-switcher-select">' .. escape_html(selector_label) .. '</label>\n'
   html = html .. '  <select id="content-switcher-select" aria-label="Select content version">\n'
 
   for _, version in ipairs(versions) do
@@ -98,7 +103,7 @@ function generate_version_selector()
     if version.id == default_version then
       selected = ' selected="selected"'
     end
-    html = html .. '    <option value="' .. version.id .. '"' .. selected .. '>' .. version.label .. '</option>\n'
+    html = html .. '    <option value="' .. escape_html(version.id) .. '"' .. selected .. '>' .. escape_html(version.label) .. '</option>\n'
   end
 
   html = html .. '  </select>\n'
