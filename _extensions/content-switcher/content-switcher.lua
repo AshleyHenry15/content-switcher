@@ -127,8 +127,6 @@ local function process_conditional_element(element)
 
   -- For HTML output, set up for dynamic switching
   if quarto.doc.is_format("html") then
-    element.attributes["data-version"] = version
-
     if version ~= default_version then
       element.classes:insert("content-switcher-hidden")
     end
