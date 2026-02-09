@@ -1,6 +1,7 @@
 ---
 title: "Content Switcher Extension Example"
 format: html
+#description: Something here just to test where the dropdown is with a description
 filters:
   - content-switcher
 content-switcher:
@@ -15,8 +16,6 @@ content-switcher:
   selector-position: "header"
   selector-label: "Version:"
 ---
-
-# Content Switcher Extension Demo
 
 This document demonstrates the content switcher extension for Quarto. Select a version above to see customized content.
 

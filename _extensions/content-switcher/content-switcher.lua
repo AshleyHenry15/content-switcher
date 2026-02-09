@@ -161,16 +161,13 @@ function Pandoc(doc)
 
     -- If we have versions and show_selector is true, inject selector HTML
     if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top
+      local insert_position = 1  -- Default to top (after title block)
 
       -- Find position based on selector_position setting
+      -- Note: "header" now means after the title block (which includes title and description from metadata)
+      -- The title block is rendered by Quarto separately, so position 1 naturally appears after it
       if selector_position == "header" then
-        for i, block in ipairs(doc.blocks) do
-          if block.t == "Header" then
-            insert_position = i + 1
-            break
-          end
-        end
+        insert_position = 1  -- Insert at beginning, which appears after Quarto's title block
       elseif selector_position == "before-content" then
         for i, block in ipairs(doc.blocks) do
           if block.t == "Div" and block.classes:includes("quarto-content") then
@@ -178,6 +175,8 @@ function Pandoc(doc)
             break
           end
         end
+      elseif selector_position == "top" then
+        insert_position = 1
       end
 
       table.insert(doc.blocks, insert_position, pandoc.RawBlock("html", selector_html))
