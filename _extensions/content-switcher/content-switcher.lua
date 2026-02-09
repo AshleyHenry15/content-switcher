@@ -54,6 +54,19 @@ function get_config(meta)
   -- If no versions defined but we have conditional blocks, add defaults based on what we find
   if #versions == 0 then
     quarto.log.output("No versions defined in metadata, will auto-detect")
+  else
+    -- Validate that default version exists in versions list
+    local default_exists = false
+    for i, v in ipairs(versions) do
+      if v.id == default_version then
+        default_exists = true
+        break
+      end
+    end
+    if not default_exists then
+      quarto.log.warning("Default version '" .. default_version .. "' not found in versions list. Using first version.")
+      default_version = versions[1].id
+    end
   end
 end
 
@@ -161,23 +174,21 @@ function Pandoc(doc)
 
     -- If we have versions and show_selector is true, inject selector HTML
     if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top (after title block)
+      local insert_position = 1  -- Default to header (after title block)
 
       -- Find position based on selector_position setting
-      -- Note: "header" now means after the title block (which includes title and description from metadata)
+      -- Note: "header" (default) means after the title block (which includes title and description from metadata)
       -- The title block is rendered by Quarto separately, so position 1 naturally appears after it
-      if selector_position == "header" then
-        insert_position = 1  -- Insert at beginning, which appears after Quarto's title block
-      elseif selector_position == "before-content" then
+      if selector_position == "before-content" then
+        -- Search for quarto-content div and insert before it
         for i, block in ipairs(doc.blocks) do
           if block.t == "Div" and block.classes:includes("quarto-content") then
             insert_position = i
             break
           end
         end
-      elseif selector_position == "top" then
-        insert_position = 1
       end
+      -- else use default insert_position = 1 for "header" and any other value
 
       table.insert(doc.blocks, insert_position, pandoc.RawBlock("html", selector_html))
     end

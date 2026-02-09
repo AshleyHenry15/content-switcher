@@ -4,3 +4,6 @@ _site
 **/*.quarto_ipynb
 *.swp
 .*.swp
+TESTING_GUIDE.MD
+CHANGELOG.md
+FUTURE_IMPROVEMENTS.md

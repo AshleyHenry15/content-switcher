@@ -24,8 +24,8 @@
   padding: 0.25rem 0.75rem;
   border: 1px solid var(--quarto-form-border, #ced4da);
   border-radius: 0.25rem;
-  background-color: #ffffff;
-  color: #212529;
+  background-color: var(--quarto-body-bg, #ffffff);
+  color: var(--quarto-body-color, #212529);
   font-size: 0.9rem;
   font-family: inherit;
   appearance: auto;
