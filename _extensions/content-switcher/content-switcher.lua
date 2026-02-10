@@ -159,9 +159,8 @@ function Pandoc(doc)
       stylesheets = {"content-switcher.css"}
     })
 
-    -- If we have versions and show_selector is true, inject selector HTML
-    if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top (after title block, before content)
+    if show_selector then
+      local insert_position = 1 -- Default to top
 
       -- Find position based on selector_position setting
       -- Note: "header" and "top" both place the selector at the beginning,
