@@ -16,7 +16,7 @@
   margin-right: 0.75rem;
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--quarto-body-color, #212529);
+  color: var(--quarto-body-color, #212529); /*Posit Dark Blue */
   white-space: nowrap;
 }
 
@@ -49,16 +49,31 @@
   display: none !important;
 }
 
-/* Support for dark mode */
-@media (prefers-color-scheme: dark) {
-  .content-switcher-selector {
-    background-color: var(--quarto-body-bg, #1a1a1a);
-    border-color: var(--quarto-border-color, #444);
+/* Comment out to remove background */
+/* Visible content switcher styling */
+.content-switcher:not(.content-switcher-hidden) {
+  background-color: color-mix(in srgb, #D1DBE5 25%, #FFFFFF 75%);
+  border: 1px solid color-mix(in srgb, #D1DBE5 50%, #FFFFFF 50%);
+  border-radius: 16px;
+  padding: .75rem 1rem .75rem 1rem;
+  margin: 0.5rem 0;
+}
+
+.quarto-dark .content-switcher:not(.content-switcher-hidden) {
+  background-color: #1C2F3D; /*Mix of Posit Dark Blue 2 and Dark Blue 3*/
+  border: 1px solid #213D4F;
+  border-radius: 16px;
+  padding: .75rem 1rem .75rem 1rem;
+}
+
+
+.quarto-dark .content-switcher-selector {
+    background-color: #1C2F3D; /*Mix of Posit Dark Blue 2 and Dark Blue 3*/
+    border-color: #213D4F;
   }
 
-  .content-switcher-selector select {
-    background-color: var(--quarto-body-bg, #2a2a2a);
+.quarto-dark .content-switcher-selector select {
+    background-color: #0E1013; /* Darker version of Posit's Dark Gray 3 */
     color: var(--quarto-body-color, #e0e0e0);
     border-color: var(--quarto-border-color, #495057);
   }
-}

@@ -23,7 +23,7 @@ extensions:
 Here's how to read data from a CSV file:
 
 ::: {.content-switcher version="v2026.01"}
-### version 2026.01.0 Example {.unlisted}
+## version 2026.01.0 Example {.unlisted}
 
 Use pandas to read CSV data:
 
