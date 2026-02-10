@@ -49,6 +49,16 @@
   display: none !important;
 }
 
+/* Comment out to remove background */
+/* Visible content switcher styling */
+.content-switcher:not(.content-switcher-hidden) {
+  background-color: color-mix(in srgb, #D1DBE5 25%, #FFFFFF 75%);
+  border: 1px solid color-mix(in srgb, #D1DBE5 50%, #FFFFFF 50%);
+  border-radius: 16px;
+  padding: .5rem 1rem .5rem 1rem;
+  margin: 0.5rem 0;
+}
+
 /* Support for dark mode */
 @media (prefers-color-scheme: dark) {
   .content-switcher-selector {
