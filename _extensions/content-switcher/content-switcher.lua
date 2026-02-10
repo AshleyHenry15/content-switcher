@@ -162,10 +162,6 @@ function Pandoc(doc)
     if show_selector then
       local insert_position = 1 -- Default to top
 
-      -- Find position based on selector_position setting
-      -- Note: "header" and "top" both place the selector at the beginning,
-      -- which is after Quarto's title block (including title and description)
-      -- and before the first content section
       if selector_position == "header" or selector_position == "top" then
         insert_position = 1
       elseif selector_position == "after-first-heading" then
