@@ -59,7 +59,7 @@ content-switcher:
 
 Use divs with the `content-switcher` class to create version-specific content blocks:
 
-```markdown
+````markdown
 ::: {.content-switcher version="v2026.01"}
 ### Version 2026.01.0 Example
 
@@ -81,7 +81,7 @@ library(readr)
 data <- read_csv('data.csv')
 ```
 :::
-```
+````
 
 ### Inline Content Switching
 
