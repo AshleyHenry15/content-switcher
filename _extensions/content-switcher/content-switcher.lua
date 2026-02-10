@@ -4,7 +4,7 @@
 -- Define defaults
 local default_version = "default"
 local versions = {}
-local selector_position = "header" -- Where to place the selector (header, top, before-content)
+local selector_position = "header" -- Where to place the selector (header/top, after-first-heading, before-content)
 local show_selector = true -- Whether to show the version selector
 local selector_label = "Version:" -- Label text for the selector
 
@@ -161,10 +161,16 @@ function Pandoc(doc)
 
     -- If we have versions and show_selector is true, inject selector HTML
     if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top
+      local insert_position = 1  -- Default to top (after title block, before content)
 
       -- Find position based on selector_position setting
-      if selector_position == "header" then
+      -- Note: "header" and "top" both place the selector at the beginning,
+      -- which is after Quarto's title block (including title and description)
+      -- and before the first content section
+      if selector_position == "header" or selector_position == "top" then
+        insert_position = 1
+      elseif selector_position == "after-first-heading" then
+        -- Legacy behavior: place after first content heading (H2, H3, etc.)
         for i, block in ipairs(doc.blocks) do
           if block.t == "Header" then
             insert_position = i + 1
