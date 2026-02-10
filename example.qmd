@@ -18,10 +18,6 @@ extensions:
       label: "Version:"
 ---
 
-# Content Switcher Extension Demo
-
-This document demonstrates the content switcher extension for Quarto. Select a version above to see customized content.
-
 ## Block-level Content Switching
 
 Here's how to read data from a CSV file:

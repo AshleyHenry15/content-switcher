@@ -4,7 +4,7 @@
 -- Define defaults
 local default_version = "default"
 local versions = {}
-local selector_position = "header" -- Where to place the selector (header, top, before-content)
+local selector_position = "header" -- Where to place the selector (header/top, after-first-heading, before-content)
 local show_selector = true         -- Whether to show the version selector
 local selector_label = "Version:"  -- Label text for the selector
 
@@ -159,7 +159,10 @@ function process_document(doc)
       local insert_position = 1 -- Default to top
 
       -- Find position based on selector_position setting
-      if selector_position == "header" then
+      if selector_position == "header" or selector_position == "top" then
+        insert_position = 1
+      elseif selector_position == "after-first-heading" then
+        -- Legacy behavior: place after first content heading (H2, H3, etc.)
         for idx, block in ipairs(doc.blocks) do
           if block.t == "Header" then
             insert_position = idx + 1
