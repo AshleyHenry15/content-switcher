@@ -109,7 +109,7 @@ Configure the extension in your document's YAML frontmatter:
 |--------|------|---------|-------------|
 | `default` | string | `"default"` | The version to display by default |
 | `versions` | array | `[]` | List of version configurations |
-| `selector-position` | string | `"header"` | Where to place the selector: `"header"`, `"top"`, or `"before-content"` |
+| `selector-position` | string | `"header"` | Where to place the selector: `"header"`/`"top"` (after title and description), `"after-first-heading"` (after first content heading), or `"before-content"` |
 | `show-selector` | boolean | `true` | Whether to show the version selector dropdown |
 | `selector-label` | string | `"Version:"` | Label text for the selector |
 
