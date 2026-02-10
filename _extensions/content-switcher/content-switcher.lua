@@ -65,7 +65,7 @@ function add_version_if_new(version)
   end
 
   -- Check if this version already exists
-  for i, v in ipairs(versions) do
+  for _, v in ipairs(versions) do
     if v.id == version then
       return -- Already exists
     end
@@ -74,6 +74,11 @@ function add_version_if_new(version)
   -- Add the new version
   table.insert(versions, { id = version, label = version })
   quarto.log.output("Added version: " .. version)
+end
+
+-- Escape special HTML characters
+local function escape_html(str)
+  return str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;")
 end
 
 -- Generate version selector HTML
