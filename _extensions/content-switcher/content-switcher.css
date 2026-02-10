@@ -72,7 +72,6 @@
     border-color: #213D4F;
   }
 
-  
 .quarto-dark .content-switcher-selector select {
     background-color: #0E1013; /* Darker version of Posit's Dark Gray 3 */
     color: var(--quarto-body-color, #e0e0e0);
