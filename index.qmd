@@ -40,12 +40,14 @@ You can use [pandas]{.content-switcher version="python"} [tidyverse]{.content-sw
 ### Configuration
 
 ```yaml
-content-switcher:
-  default: "python"
-  versions:
-    - id: "python"
-      label: "Python"
-    - id: "r"
-      label: "R"
-  selector-position: "header"
+extensions:
+  content-switcher:
+    default: "python"
+    versions:
+      - id: "python"
+        label: "Python"
+      - id: "r"
+        label: "R"
+    selector:
+      position: "header"
 ```

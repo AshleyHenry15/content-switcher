@@ -5,13 +5,14 @@
 local default_version = "default"
 local versions = {}
 local selector_position = "header" -- Where to place the selector (header, top, before-content)
-local show_selector = true -- Whether to show the version selector
-local selector_label = "Version:" -- Label text for the selector
+local show_selector = true         -- Whether to show the version selector
+local selector_label = "Version:"  -- Label text for the selector
 
 -- Parse configuration from document metadata
 function get_config(meta)
   -- Get config from document metadata
-  local config = meta["content-switcher"]
+  local extensions = meta["extensions"]
+  local config = extensions and extensions["content-switcher"]
 
   if config ~= nil then
     -- Get default version if specified
@@ -21,7 +22,7 @@ function get_config(meta)
 
     -- Get versions if specified
     if config["versions"] ~= nil then
-      for i, version in ipairs(config["versions"]) do
+      for _, version in ipairs(config["versions"]) do
         if type(version) == "table" then
           -- Handle detailed version specification with ID and label
           local id = pandoc.utils.stringify(version["id"])
@@ -35,19 +36,25 @@ function get_config(meta)
       end
     end
 
-    -- Get selector position if specified
-    if config["selector-position"] ~= nil then
-      selector_position = pandoc.utils.stringify(config["selector-position"])
-    end
-
-    -- Get show_selector if specified
-    if config["show-selector"] ~= nil then
-      show_selector = config["show-selector"]
-    end
-
-    -- Get selector label if specified
-    if config["selector-label"] ~= nil then
-      selector_label = pandoc.utils.stringify(config["selector-label"])
+    -- Get selector configuration if specified
+    local selector_config = config["selector"]
+    if selector_config ~= nil then
+      -- Boolean shorthand: selector: true / selector: false
+      local stringified = pandoc.utils.stringify(selector_config)
+      if stringified == "true" or stringified == "false" then
+        show_selector = (stringified == "true")
+      else
+        -- Object form: selector: { position, label, show }
+        if selector_config["position"] ~= nil then
+          selector_position = pandoc.utils.stringify(selector_config["position"])
+        end
+        if selector_config["show"] ~= nil then
+          show_selector = (pandoc.utils.stringify(selector_config["show"]) == "true")
+        end
+        if selector_config["label"] ~= nil then
+          selector_label = pandoc.utils.stringify(selector_config["label"])
+        end
+      end
     end
   end
 
@@ -65,7 +72,7 @@ function add_version_if_new(version)
   end
 
   -- Check if this version already exists
-  for i, v in ipairs(versions) do
+  for _, v in ipairs(versions) do
     if v.id == version then
       return -- Already exists
     end
@@ -76,6 +83,11 @@ function add_version_if_new(version)
   quarto.log.output("Added version: " .. version)
 end
 
+-- Escape special HTML characters
+local function escape_html(str)
+  return str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;")
+end
+
 -- Generate version selector HTML
 function generate_version_selector()
   if #versions == 0 or not show_selector then
@@ -83,15 +95,17 @@ function generate_version_selector()
   end
 
   local html = '<div class="content-switcher-selector">\n'
-  html = html .. '  <label for="content-switcher-select">' .. selector_label .. '</label>\n'
+  html = html .. '  <label for="content-switcher-select">' .. escape_html(selector_label) .. '</label>\n'
   html = html .. '  <select id="content-switcher-select" aria-label="Select content version">\n'
 
-  for i, version in ipairs(versions) do
+  for _, version in ipairs(versions) do
     local selected = ""
     if version.id == default_version then
       selected = ' selected="selected"'
     end
-    html = html .. '    <option value="' .. version.id .. '"' .. selected .. '>' .. version.label .. '</option>\n'
+    html = html ..
+    '    <option value="' ..
+    escape_html(version.id) .. '"' .. selected .. '>' .. escape_html(version.label) .. '</option>\n'
   end
 
   html = html .. '  </select>\n'
@@ -112,9 +126,7 @@ local function process_conditional_element(element)
   add_version_if_new(version)
 
   -- For HTML output, set up for dynamic switching
-  if quarto.doc.isFormat("html") then
-    element.attributes["data-version"] = version
-
+  if quarto.doc.is_format("html") then
     if version ~= default_version then
       element.classes:insert("content-switcher-hidden")
     end
@@ -130,51 +142,34 @@ local function process_conditional_element(element)
   end
 end
 
--- Process conditional text divs
-function Div(div)
-  return process_conditional_element(div)
-end
-
--- Process inline conditional text (spans)
-function Span(span)
-  return process_conditional_element(span)
-end
-
 -- Main filter function
-function Meta(meta)
-  get_config(meta)
-  return meta
-end
-
-function Pandoc(doc)
-  -- Only for HTML, inject selector and JavaScript
-  if quarto.doc.isFormat("html") then
+function process_document(doc)
+  -- Only for HTML with versions, inject selector and JavaScript
+  if quarto.doc.is_format("html") and #versions > 0 then
     local selector_html = generate_version_selector()
 
-    -- Inject version selector and JavaScript
-    quarto.doc.addHtmlDependency({
+    quarto.doc.add_html_dependency({
       name = "content-switcher",
       version = "0.1.0",
-      scripts = {"content-switcher.js"},
-      stylesheets = {"content-switcher.css"}
+      scripts = { "content-switcher.js" },
+      stylesheets = { "content-switcher.css" }
     })
 
-    -- If we have versions and show_selector is true, inject selector HTML
-    if #versions > 0 and show_selector then
-      local insert_position = 1  -- Default to top
+    if show_selector then
+      local insert_position = 1 -- Default to top
 
       -- Find position based on selector_position setting
       if selector_position == "header" then
-        for i, block in ipairs(doc.blocks) do
+        for idx, block in ipairs(doc.blocks) do
           if block.t == "Header" then
-            insert_position = i + 1
+            insert_position = idx + 1
             break
           end
         end
       elseif selector_position == "before-content" then
-        for i, block in ipairs(doc.blocks) do
+        for idx, block in ipairs(doc.blocks) do
           if block.t == "Div" and block.classes:includes("quarto-content") then
-            insert_position = i
+            insert_position = idx
             break
           end
         end
@@ -189,8 +184,8 @@ end
 
 -- Register the filter functions
 return {
-  { Meta = Meta },
-  { Span = Span },
-  { Div = Div },
-  { Pandoc = Pandoc }
+  { Meta = get_config },
+  { Span = process_conditional_element },
+  { Div = process_conditional_element },
+  { Pandoc = process_document }
 }
