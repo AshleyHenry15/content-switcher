@@ -56,7 +56,7 @@ section.content-switcher:not(.content-switcher-hidden) {
   background-color: color-mix(in srgb, #D1DBE5 25%, #FFFFFF 75%);
   border: 1px solid color-mix(in srgb, #D1DBE5 50%, #FFFFFF 50%);
   border-radius: 16px;
-  padding: .75rem 1rem .75rem 1rem;
+  padding: .25rem 1rem .25rem 1rem;
   margin: 0.5rem 0;
 }
 
