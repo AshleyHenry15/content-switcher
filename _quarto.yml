@@ -1,5 +1,5 @@
 project:
-  type: website
+  type: posit-docs
   output-dir: _site
   title: "Content Switcher Extension Demo"
 
