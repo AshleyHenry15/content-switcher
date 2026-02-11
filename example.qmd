@@ -64,7 +64,7 @@ You can also use content switching inline. For example, you might want to use
 [pandas]{.content-switcher version="v2026.01"}
 [readr]{.content-switcher version="v2.0"}
 [CSV.jl]{.content-switcher version="v3.0"}
-to read your data files.
+to read your data files. You can also use content switching inline. You can also use content switching inline. You can also use content switching inline. You can also use content switching inline.
 
 ## Additional Features
 
