@@ -1,7 +1,7 @@
 title: posit-docs
 author: Ashley Henry, David Aja, Aron Atkins
-version: 8.1.1
-quarto-required: ">=1.8.25"
+version: 8.0.0
+quarto-required: ">=1.8.13"
 contributes:
   project:
     project:
@@ -38,5 +38,4 @@ contributes:
         toc-expand: true
         include-in-header: 
           - "assets/_analytics.html"
-
-
+          #- assets/_version-toast.html

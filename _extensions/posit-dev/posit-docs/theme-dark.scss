@@ -4,41 +4,46 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
 
 // import shared colors
-@import "_posit-colors";
+@import '_posit-colors';
 
 /*-- scss:variables --*/
-$primary: $posit-blue-alt;
-$code-background: #0d1117;
-$dark-md-body: $posit-white;
-$dark-md-background: #181c25; // body background
+$primary: $posit-light-blue-3;
+$white: $posit-white;
+$code-background: #ffffff14;
+$dark-md-body: #9CA3AF;
+$dark-md-background: #030712;
 $slate-800: #1E293B; // slate-800 vibe
-$dark-constrast: rgb(19, 22.5, 30.5); // dark gray/black for nav bar, grid, footer
 
 // Feature preview heading colors
 $preview-header: $posit-orange; /* posit orange, contrast: 8.45 */
 $preview-header-border: darken($preview-header, 5%);
 
+// scss-docs-end color-variables
+
 // Typography
-$font-family-sans-serif: "Open Sans", "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans",
-  "Liberation Sans", Arial, sans-serif, system-ui;
+// Font, line-height, and color for body text, headings, and more.
+
+//scss-font-start font-variables
+$font-family-sans-serif: "Open Sans", "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial,
+  sans-serif, system-ui;
 $font-family-monospace: "Source Code Pro", monospace;
 $font-family-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-size-base: 1rem;
-$line-height-base: 1.7; // manual entry to force match to light theme
+// scss-docs-end font-variables
 
-// Font and body color
+//font and body color
 $body-color: $dark-md-body;
 
-// Navbar customization
-$navbar-bg: $dark-constrast;
+//  Customize the navbar
+$navbar-bg: $dark-md-background;
 $navbar-fg: $posit-light-gray-1;
 $navbar-hl: $primary;
 $navbar-brand: $posit-white;
 $navbar-brand-hl: $navbar-brand;
-$navbar-brand-font-size: 1rem !default;
+//$navbar-brand-font-size: 14px !default;
 
-// Sidebar customization
-$sidebar-fg: darken($posit-white, 5%);
+// Customize the sidebar
+$sidebar-fg: darken($white, 5%);
 $sidebar-bg: $dark-md-background;
 
 // Body
@@ -53,47 +58,36 @@ $callout-color-warning: $posit-orange;
 $callout-color-important: $posit-burgundy;
 
 // Tables
+
 $table-hover-bg: #2C3A54 !default;
 $table-striped-bg: $code-background !default;
 
-/* ======== Layout ======== */
+// CSS overrides
 
+// Layout
 /* Navbar */
-#quarto-header > nav {
+
+#quarto-header>nav {
   border-bottom: 1px solid $posit-dark-gray-1 !important;
 }
 
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link.show {
-  border-bottom: 2px solid $primary;
-  padding-bottom: 24px;
-  margin-bottom: -34px;
-}
-
 /* Sidebar */
-div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents,
-nav.sidebar.sidebar-navigation:not(.rollup) {
+
+div.sidebar.sidebar-navigation.rollup.quarto-sidebar-toggle-contents, nav.sidebar.sidebar-navigation:not(.rollup) {
   border-right: 1px solid $posit-dark-gray-2 !important;
 }
 
 /* Sidebar pill for active item */
-div.sidebar-item-container .active,
-div.sidebar-item-container .show > .nav-link,
-div.sidebar-item-container .sidebar-link > code {
-  color: #ffffff !important;
-  // background-color: rgb(19, 22.5, 30.5);
-  background-color: rgba($primary, 0.1);
+
+div.sidebar-item-container .active, div.sidebar-item-container .show>.nav-link, div.sidebar-item-container .sidebar-link>code {
+  background-color: #1E293B; // slate-800 vibe
   border-radius: 5px;
-  border: $primary 1px solid;
   margin-bottom: 2px;
   margin-left: -5px;
   padding: 6px;
 }
 
-/* Navbar right hamburger menu */
-.navbar-expand-lg .navbar-nav .dropdown-menu {
-  border: 1px solid $posit-dark-gray-1;
-}
+/* Nav bar  right hamburger menu */
 
 .dropdown-item:hover,
 .dropdown-item:focus {
@@ -101,23 +95,15 @@ div.sidebar-item-container .sidebar-link > code {
   background-color: $code-background !important;
 }
 
-.navbar .dropdown-item {
-  border-bottom: 1px solid $posit-dark-gray-3;
-}
-
 /* Page navigation */
 .nav-page .nav-page-text {
-  color: darken($posit-white, 5%);
+  color: darken($white, 5%);
 }
 
-/* Footer */
-.nav-footer {
-  border-top: solid 1px $posit-dark-gray-2;
-}
+// Components
 
-/* ======== Components ======== */
+/* Tabs and pills */
 
-/* Tabs and Pills */
 .nav-tabs .nav-link {
   color: $navbar-fg;
 }
@@ -133,25 +119,21 @@ div.sidebar-item-container .sidebar-link > code {
   color: $dark-md-background !important;
 }
 
-/* Breadcrumbs */
-.quarto-title-breadcrumbs .breadcrumb li:last-of-type a {
-  color: $posit-white !important;
-}
-
-/* ======== Code ======== */
+// Code
 
 /* Code blocks */
-div.sourceCode,
-pre.console {
+
+div.sourceCode, pre.console {
   background-color: $code-background !important;
   border: none !important;
   border-radius: 10px;
 }
 
 /* Code blocks filename title styles */
+
 .quarto-dark .code-with-filename .code-with-filename-file {
   background-color: #ffffff0d !important;
-  padding: 0.5rem !important;
+  padding: .5rem !important;
   border: none;
 }
 
@@ -165,11 +147,11 @@ pre.console {
   border-top: 1px solid $posit-dark-gray-2;
 }
 
-/* Code block with no language specified */
+/* Code block with no lanuage specified */
 code:not(.sourceCode) {
   background-color: $code-background !important;
   color: #cbd5e1;
-  padding: 0.5rem;
+  padding: .5rem;
 }
 
 div.sourceCode,
@@ -180,98 +162,45 @@ pre {
   overflow: auto; /* ensure scrollbars appear when needed */
 }
 
-p code.sourceCode,
-li code.sourceCode,
-td code.sourceCode {
-  background-color: $code-background !important;
-}
+// Tables
 
-/* Tables */
 table caption code {
   background-color: #6e768166;
 }
 
-/* ======== Callouts ======== */
+
+/* Callouts */
 
 /* Note */
+
 div.callout-note.callout {
   border-left-color: $posit-dark-blue-2 !important;
   border: 1px solid $posit-dark-blue-2 !important;
 }
 
 /* Warning */
+
 div.callout-warning.callout {
   border-left-color: $posit-dark-orange-2 !important;
   border: 1px solid $posit-dark-orange-2 !important;
 }
 
 /* Important */
+
 div.callout-important.callout {
   border-left-color: $posit-dark-burgundy-2 !important;
   border: 1px solid $posit-dark-burgundy-2 !important;
 }
 
-/* ======== Other UI Elements ======== */
-
 /* Footnotes */
+
 a.footnote-back {
   font-weight: 900;
   font-size: 1.1rem;
 }
 
 /* Back to top link */
+
 #quarto-back-to-top {
-  color: $posit-white !important;
-}
-
-/* Blockquote */
-.blockquote {
-  color: $posit-light-gray-1 !important;
-}
-
-/* Cookie popup dark theme */
-.termsfeed-com---palette-light .cc-pc-head-lang select {
-  background: white;
-}
-
-/* ======== Version Toast ======== */
-// Or directly override via toast styling
-#version-toast {
-  background-color: $dark-md-background;
-  color: $body-color;
-  border-color: $primary;
-
-  .toast-header {
-    background-color: $dark-constrast;
-    color: #ffffff;
-    border-bottom: 1px solid $posit-dark-gray-1;
-  }
-
-  .btn-close {
-    filter: invert(1);
-  }
-}
-
-/* ======== Mermaid Diagrams ======== */
-[id^="mermaid-"] {
-  .cluster rect {
-    fill: none !important;
-  }
-
-  foreignObject {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:has(.edgeLabel) {
-      p {
-        margin-inline: auto !important;
-        max-width: max-content;
-        border-radius: 8px;
-        padding: 0 0.75rem;
-        background-color: #447099 !important;
-        color: $body-color !important;
-      }
-    }
-  }
+  color: $white !important;
 }
