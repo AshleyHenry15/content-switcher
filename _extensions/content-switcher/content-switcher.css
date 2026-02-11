@@ -1,4 +1,8 @@
 /* content-switcher.css */
+:root {
+  --content-switcher-tint: #a2b8cb;
+}
+
 .content-switcher-selector {
   display: inline-flex;
   align-items: center;
@@ -50,20 +54,22 @@
 }
 
 /* Comment out to remove background */
-/* Visible content switcher styling - block level (divs and sections) */
+/* Shared styling for all visible content switchers */
+.content-switcher:not(.content-switcher-hidden) {
+  background-color: color-mix(in srgb, var(--content-switcher-tint) 25%, #FFFFFF 75%);
+  border: 1px solid color-mix(in srgb, var(--content-switcher-tint) 50%, #FFFFFF 50%);
+}
+
+/* Block-level specific styling (divs and sections) */
 div.content-switcher:not(.content-switcher-hidden),
 section.content-switcher:not(.content-switcher-hidden) {
-  background-color: color-mix(in srgb, #a2b8cb 25%, #FFFFFF 75%);
-  border: 1px solid color-mix(in srgb, #a2b8cb 50%, #FFFFFF 50%);
   border-radius: 16px;
   padding: .75rem 1rem .75rem 1rem;
   margin: 0.5rem 0;
 }
 
-/* Visible content switcher styling - inline level (spans) */
+/* Inline-level specific styling (spans) */
 span.content-switcher:not(.content-switcher-hidden) {
-  background-color: color-mix(in srgb, #a2b8cb 25%, #FFFFFF 75%);
-  border: 1px solid color-mix(in srgb, #a2b8cb 50%, #FFFFFF 50%);
   border-radius: 4px;
   padding: 0.125rem 0.375rem;
 }
