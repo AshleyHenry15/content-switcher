@@ -53,8 +53,8 @@
 /* Visible content switcher styling - block level (divs and sections) */
 div.content-switcher:not(.content-switcher-hidden),
 section.content-switcher:not(.content-switcher-hidden) {
-  background-color: color-mix(in srgb, #D1DBE5 25%, #FFFFFF 75%);
-  border: 1px solid color-mix(in srgb, #D1DBE5 50%, #FFFFFF 50%);
+  background-color: color-mix(in srgb, #a2b8cb 25%, #FFFFFF 75%);
+  border: 1px solid color-mix(in srgb, #a2b8cb 50%, #FFFFFF 50%);
   border-radius: 16px;
   padding: .75rem 1rem .75rem 1rem;
   margin: 0.5rem 0;
@@ -62,8 +62,8 @@ section.content-switcher:not(.content-switcher-hidden) {
 
 /* Visible content switcher styling - inline level (spans) */
 span.content-switcher:not(.content-switcher-hidden) {
-  background-color: color-mix(in srgb, #D1DBE5 25%, #FFFFFF 75%);
-  border: 1px solid color-mix(in srgb, #D1DBE5 50%, #FFFFFF 50%);
+  background-color: color-mix(in srgb, #a2b8cb 25%, #FFFFFF 75%);
+  border: 1px solid color-mix(in srgb, #a2b8cb 50%, #FFFFFF 50%);
   border-radius: 4px;
   padding: 0.125rem 0.375rem;
 }
