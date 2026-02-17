@@ -3,7 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const selector = document.getElementById("content-switcher-select");
   if (!selector) return;
 
+  const validOptions = Array.from(selector.options).map(opt => opt.value);
+
   function switchVersion(version) {
+    if (!version || !validOptions.includes(version)) {
+      console.warn(`Content switcher: Invalid version "${version}"`);
+      return;
+    }
+
     const blocks = document.querySelectorAll(".content-switcher");
 
     blocks.forEach(block => {
@@ -30,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVersion = urlParams.get('version');
   const savedVersion = localStorage.getItem("content-switcher-selected-version");
-  const validOptions = Array.from(selector.options).map(opt => opt.value);
 
   if (urlVersion && validOptions.includes(urlVersion)) {
     selector.value = urlVersion;
