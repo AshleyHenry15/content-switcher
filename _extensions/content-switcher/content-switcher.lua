@@ -4,7 +4,7 @@
 -- Define defaults
 local default_version = "default"
 local versions = {}
-local version_set = {}             -- Hash table for O(1) version lookups
+local version_set = {}
 local selector_position = "header" -- Where to place the selector (header/top, after-first-heading, before-content)
 local show_selector = true         -- Whether to show the version selector
 local selector_label = "Version:"  -- Label text for the selector
@@ -61,39 +61,31 @@ function get_config(meta)
     end
   end
 
-  -- If no versions defined but we have conditional blocks, add defaults based on what we find
-  if #versions == 0 then
-    quarto.log.output("No versions defined in metadata, will auto-detect")
-  end
 end
 
 -- Add a version dynamically if discovered in content
 function add_version_if_new(version)
-  -- Don't add empty versions
   if version == nil or version == "" then
     return
   end
 
-  -- Check if this version already exists (O(1) hash table lookup)
   if version_set[version] then
-    return -- Already exists
+    return
   end
 
-  -- Add the new version to both structures
   version_set[version] = true
   table.insert(versions, { id = version, label = version })
   quarto.log.output("Added version: " .. version)
-end
-
--- Escape special HTML characters
-local function escape_html(str)
-  return str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;")
 end
 
 -- Generate version selector HTML
 function generate_version_selector()
   if #versions == 0 or not show_selector then
     return ""
+  end
+
+  local function escape_html(str)
+    return str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;")
   end
 
   local html = '<div class="content-switcher-selector">\n'
@@ -116,16 +108,6 @@ function generate_version_selector()
   return html
 end
 
--- Helper function to mark headers as unlisted
-local function mark_headers_unlisted(content)
-  return pandoc.walk_block(content, {
-    Header = function(header)
-      header.classes:insert("unlisted")
-      return header
-    end
-  })
-end
-
 -- Helper function to process conditional elements (both Div and Span)
 local function process_conditional_element(element)
   -- Only process elements with content-switcher class
@@ -139,7 +121,12 @@ local function process_conditional_element(element)
 
   -- For Div elements, mark any headers inside as unlisted to exclude from TOC
   if element.t == "Div" then
-    element = mark_headers_unlisted(element)
+    element = pandoc.walk_block(element, {
+      Header = function(header)
+        header.classes:insert("unlisted")
+        return header
+      end
+    })
   end
 
   -- For HTML output, set up for dynamic switching
@@ -179,7 +166,7 @@ function process_document(doc)
       if selector_position == "header" or selector_position == "top" then
         insert_position = 1
       elseif selector_position == "after-first-heading" then
-        -- Legacy behavior: place after first content heading (H2, H3, etc.)
+        -- Legacy behavior: place after first heading
         for idx, block in ipairs(doc.blocks) do
           if block.t == "Header" then
             insert_position = idx + 1
