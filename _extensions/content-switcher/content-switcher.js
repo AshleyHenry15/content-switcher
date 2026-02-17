@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function() {
     window.dispatchEvent(new CustomEvent('content-switcher:changed', {
       detail: { version }
     }));
+
+    // Keep backward compatibility with scroll hack
+    window.dispatchEvent(new Event('scroll'));
   }
 
   selector.addEventListener("change", function(e) {
