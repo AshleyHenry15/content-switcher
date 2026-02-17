@@ -83,6 +83,8 @@ data <- read_csv('data.csv')
 :::
 ````
 
+**Note:** Headings inside content-switcher blocks are automatically excluded from the table of contents. This prevents the TOC from showing headings that aren't currently visible when switching between versions.
+
 ### Inline Content Switching
 
 Switch content inline within paragraphs using spans:
@@ -150,6 +152,20 @@ User selections are automatically saved in localStorage and persist across page 
 ### Auto-Detection
 
 If no versions are specified in the configuration, the extension will automatically detect versions from content blocks.
+
+### Custom Events
+
+When content switches between versions, a custom `content-switcher:changed` event is dispatched on the window object. You can listen for this event to trigger custom behavior:
+
+```javascript
+window.addEventListener('content-switcher:changed', function(event) {
+  console.log('Switched to version:', event.detail.version);
+});
+```
+
+## Limitations
+
+- **Table of Contents**: Headings inside content-switcher blocks are automatically excluded from the table of contents. This is necessary because Quarto's TOC system doesn't support dynamically updating which headings should be displayed. If you need version-specific sections in your TOC, consider placing the content-switcher blocks inside the sections rather than wrapping entire sections with headings.
 
 ## Example
 
