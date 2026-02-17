@@ -115,8 +115,11 @@ local function process_conditional_element(element)
     return element
   end
 
-  -- Get version (default if not specified)
-  local version = element.attributes["version"] or default_version
+  -- Get version (default if not specified or empty)
+  local version = element.attributes["version"]
+  if version == nil or version == "" then
+    version = default_version
+  end
   add_version_if_new(version)
 
   -- For Div elements, mark any headers inside as unlisted to exclude from TOC
