@@ -4,6 +4,7 @@
 -- Define defaults
 local default_version = "default"
 local versions = {}
+local version_set = {}             -- Hash table for O(1) version lookups
 local selector_position = "header" -- Where to place the selector (header/top, after-first-heading, before-content)
 local show_selector = true         -- Whether to show the version selector
 local selector_label = "Version:"  -- Label text for the selector
@@ -28,10 +29,12 @@ function get_config(meta)
           local id = pandoc.utils.stringify(version["id"])
           local label = pandoc.utils.stringify(version["label"] or id)
           table.insert(versions, { id = id, label = label })
+          version_set[id] = true
         else
           -- Handle simple version string
           local id = pandoc.utils.stringify(version)
           table.insert(versions, { id = id, label = id })
+          version_set[id] = true
         end
       end
     end
@@ -71,14 +74,13 @@ function add_version_if_new(version)
     return
   end
 
-  -- Check if this version already exists
-  for _, v in ipairs(versions) do
-    if v.id == version then
-      return -- Already exists
-    end
+  -- Check if this version already exists (O(1) hash table lookup)
+  if version_set[version] then
+    return -- Already exists
   end
 
-  -- Add the new version
+  -- Add the new version to both structures
+  version_set[version] = true
   table.insert(versions, { id = version, label = version })
   quarto.log.output("Added version: " .. version)
 end
