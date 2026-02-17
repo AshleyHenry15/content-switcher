@@ -16,9 +16,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     localStorage.setItem("content-switcher-selected-version", version);
 
-    // Trigger scroll event to update Quarto's TOC active state
-    // This ensures the correct heading is highlighted after switching versions
-    window.dispatchEvent(new Event('scroll'));
+    // Dispatch custom event for extensibility
+    window.dispatchEvent(new CustomEvent('content-switcher:changed', {
+      detail: { version }
+    }));
   }
 
   selector.addEventListener("change", function(e) {
