@@ -4,6 +4,7 @@
 -- Define defaults
 local default_version = "default"
 local versions = {}
+local version_set = {}             -- Hash table for O(1) version lookups
 local selector_position = "header" -- Where to place the selector (header/top, after-first-heading, before-content)
 local show_selector = true         -- Whether to show the version selector
 local selector_label = "Version:"  -- Label text for the selector
@@ -28,10 +29,12 @@ function get_config(meta)
           local id = pandoc.utils.stringify(version["id"])
           local label = pandoc.utils.stringify(version["label"] or id)
           table.insert(versions, { id = id, label = label })
+          version_set[id] = true
         else
           -- Handle simple version string
           local id = pandoc.utils.stringify(version)
           table.insert(versions, { id = id, label = id })
+          version_set[id] = true
         end
       end
     end
@@ -71,14 +74,13 @@ function add_version_if_new(version)
     return
   end
 
-  -- Check if this version already exists
-  for _, v in ipairs(versions) do
-    if v.id == version then
-      return -- Already exists
-    end
+  -- Check if this version already exists (O(1) hash table lookup)
+  if version_set[version] then
+    return -- Already exists
   end
 
-  -- Add the new version
+  -- Add the new version to both structures
+  version_set[version] = true
   table.insert(versions, { id = version, label = version })
   quarto.log.output("Added version: " .. version)
 end
@@ -114,6 +116,16 @@ function generate_version_selector()
   return html
 end
 
+-- Helper function to mark headers as unlisted
+local function mark_headers_unlisted(content)
+  return pandoc.walk_block(content, {
+    Header = function(header)
+      header.classes:insert("unlisted")
+      return header
+    end
+  })
+end
+
 -- Helper function to process conditional elements (both Div and Span)
 local function process_conditional_element(element)
   -- Only process elements with content-switcher class
@@ -124,6 +136,11 @@ local function process_conditional_element(element)
   -- Get version (default if not specified)
   local version = element.attributes["version"] or default_version
   add_version_if_new(version)
+
+  -- For Div elements, mark any headers inside as unlisted to exclude from TOC
+  if element.t == "Div" then
+    element = mark_headers_unlisted(element)
+  end
 
   -- For HTML output, set up for dynamic switching
   if quarto.doc.is_format("html") then
