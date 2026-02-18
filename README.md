@@ -41,17 +41,19 @@ title: "My Document"
 format: html
 filters:
   - content-switcher
-content-switcher:
-  default: "v2026.01"
-  versions:
-    - id: "v2026.01"
-      label: "2026.01.0"
-    - id: "v2.0"
-      label: "2.0"
-    - id: "v3.0"
-      label: "3.0"
-  selector-position: "header"
-  selector-label: "Version:"
+extensions:
+  content-switcher:
+    default: "v2026.01"
+    versions:
+      - id: "v2026.01"
+        label: "2026.01.0"
+      - id: "v2.0"
+        label: "2.0"
+      - id: "v3.0"
+        label: "3.0"
+    selector:
+      position: "header"
+      label: "Version:"
 ---
 ```
 
@@ -107,32 +109,49 @@ This is a version-specific note with callout styling.
 
 ## Configuration Options
 
-Configure the extension in your document's YAML frontmatter:
+Configure the extension in your document's YAML frontmatter under `extensions: content-switcher:`:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `default` | string | `"default"` | The version to display by default |
 | `versions` | array | `[]` | List of version configurations |
-| `selector-position` | string | `"header"` | Where to place the selector: `"header"`/`"top"` (after title and description), `"after-first-heading"` (after first content heading), or `"before-content"` |
-| `show-selector` | boolean | `true` | Whether to show the version selector dropdown |
-| `selector-label` | string | `"Version:"` | Label text for the selector |
+| `selector.position` | string | `"header"` | Where to place the selector: `"header"`/`"top"` (after title and description), `"after-first-heading"` (after first content heading), or `"before-content"` |
+| `selector.show` | boolean | `true` | Whether to show the version selector dropdown |
+| `selector.label` | string | `"Version:"` | Label text for the selector |
 
 ### Version Configuration
 
 Each version in the `versions` array can be configured as:
 
 ```yaml
-versions:
-  - id: "unique-id"        # Required: unique identifier used in version attributes
-    label: "Display Name"  # Optional: user-friendly name shown in dropdown (defaults to id)
+extensions:
+  content-switcher:
+    versions:
+      - id: "unique-id"        # Required: unique identifier used in version attributes
+        label: "Display Name"  # Optional: user-friendly name shown in dropdown (defaults to id)
 ```
 
 Or as a simple string:
 
 ```yaml
-versions:
-  - "v1.0"
-  - "v2.0"
+extensions:
+  content-switcher:
+    versions:
+      - "v1.0"
+      - "v2.0"
+```
+
+### Selector Configuration
+
+The selector can be customized with these options:
+
+```yaml
+extensions:
+  content-switcher:
+    selector:
+      position: "header"      # Where to place the selector
+      label: "Version:"       # Label text displayed next to dropdown
+      show: true              # Whether to show the selector (default: true)
 ```
 
 ## Advanced Features
