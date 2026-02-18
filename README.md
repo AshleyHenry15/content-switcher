@@ -124,17 +124,34 @@ Configure the extension in your document's YAML frontmatter under `extensions: c
 Each version in the `versions` array can be configured as:
 
 ```yaml
-versions:
-  - id: "unique-id"        # Required: unique identifier used in version attributes
-    label: "Display Name"  # Optional: user-friendly name shown in dropdown (defaults to id)
+extensions:
+  content-switcher:
+    versions:
+      - id: "unique-id"        # Required: unique identifier used in version attributes
+        label: "Display Name"  # Optional: user-friendly name shown in dropdown (defaults to id)
 ```
 
 Or as a simple string:
 
 ```yaml
-versions:
-  - "v1.0"
-  - "v2.0"
+extensions:
+  content-switcher:
+    versions:
+      - "v1.0"
+      - "v2.0"
+```
+
+### Selector Configuration
+
+The selector can be customized with these options:
+
+```yaml
+extensions:
+  content-switcher:
+    selector:
+      position: "header"      # Where to place the selector
+      label: "Version:"       # Label text displayed next to dropdown
+      show: true              # Whether to show the selector (default: true)
 ```
 
 ## Advanced Features
