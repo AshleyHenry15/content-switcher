@@ -116,15 +116,16 @@ function generate_version_selector()
   return html
 end
 
--- Helper function to mark headers as unlisted
-local function mark_headers_unlisted(content)
-  return pandoc.walk_block(content, {
-    Header = function(header)
-      header.classes:insert("unlisted")
-      return header
-    end
-  })
-end
+-- Helper function to mark headers as unlisted (not used by default)
+-- Users can manually add {.unlisted} to headers if they want to exclude from TOC
+-- local function mark_headers_unlisted(content)
+--   return pandoc.walk_block(content, {
+--     Header = function(header)
+--       header.classes:insert("unlisted")
+--       return header
+--     end
+--   })
+-- end
 
 -- Helper function to process conditional elements (both Div and Span)
 local function process_conditional_element(element)
@@ -137,17 +138,10 @@ local function process_conditional_element(element)
   local version = element.attributes["version"] or default_version
   add_version_if_new(version)
 
-  -- For Div elements, mark any headers inside as unlisted to exclude from TOC
-  if element.t == "Div" then
-    element = mark_headers_unlisted(element)
-  end
-
   -- For HTML output, set up for dynamic switching
   if quarto.doc.is_format("html") then
-    if version ~= default_version then
-      element.classes:insert("content-switcher-hidden")
-    end
-
+    -- Don't add content-switcher-hidden class here to ensure all content
+    -- is indexed by Quarto's search. JavaScript will handle hiding.
     return element
   end
 

@@ -61,7 +61,7 @@ Use divs with the `content-switcher` class to create version-specific content bl
 
 ````markdown
 ::: {.content-switcher version="v2026.01"}
-### Version 2026.01.0 Example
+## Version 2026.01.0 Example {.unlisted}
 
 Use pandas to read CSV data:
 
@@ -72,7 +72,7 @@ data = pd.read_csv('data.csv')
 :::
 
 ::: {.content-switcher version="v2.0"}
-### Version 2.0 Example
+## Version 2.0 Example {.unlisted}
 
 Use readr to read CSV data:
 
@@ -83,7 +83,7 @@ data <- read_csv('data.csv')
 :::
 ````
 
-**Note:** Headings inside content-switcher blocks are automatically excluded from the table of contents. This prevents the TOC from showing headings that aren't currently visible when switching between versions.
+**Note:** Add `{.unlisted}` to headings to exclude them from the table of contents. Use level 2 headings (`##`) for content that should be searchable as separate entries (see Limitations section for details).
 
 ### Inline Content Switching
 
@@ -165,7 +165,24 @@ window.addEventListener('content-switcher:changed', function(event) {
 
 ## Limitations
 
-- **Table of Contents**: Headings inside content-switcher blocks are automatically excluded from the table of contents. This is necessary because Quarto's TOC system doesn't support dynamically updating which headings should be displayed. If you need version-specific sections in your TOC, consider placing the content-switcher blocks inside the sections rather than wrapping entire sections with headings.
+- **Table of Contents**: If you want to hide headings from the table of contents, you can manually add the `{.unlisted}` class to headings inside content-switcher blocks. This prevents the TOC from showing headings that aren't currently visible when switching between versions.
+
+- **Search Indexing**: Quarto's search feature only creates separate search entries for **level 2 headings (`##`)** and above. Level 3 headings (`###`) and below are included in their parent section's searchable text but won't appear as separate search results.
+
+  **Important**: If you want version-specific content blocks to be individually searchable, use level 2 headings (`##`) instead of level 3 or lower. If you use `{.unlisted}` on level 3+ headings, the content will still be searchable but won't appear as a separate search result entry.
+
+  Example for searchable version blocks:
+  ```markdown
+  ::: {.content-switcher version="v1.0"}
+  ## Version 1.0 Features {.unlisted}
+  Content here will be searchable as a separate entry.
+  :::
+
+  ::: {.content-switcher version="v2.0"}
+  ## Version 2.0 Features {.unlisted}
+  Content here will also be searchable as a separate entry.
+  :::
+  ```
 
 ## Example
 

@@ -36,16 +36,21 @@ document.addEventListener("DOMContentLoaded", function() {
     switchVersion(e.target.value);
   });
 
-  // Check for URL parameter first, then localStorage
+  // Check for URL parameter first, then localStorage, then default
   const urlParams = new URLSearchParams(window.location.search);
   const urlVersion = urlParams.get('version');
   const savedVersion = localStorage.getItem("content-switcher-selected-version");
 
+  let initialVersion = selector.value; // Use selector's default value
+
   if (urlVersion && validOptions.includes(urlVersion)) {
+    initialVersion = urlVersion;
     selector.value = urlVersion;
-    switchVersion(urlVersion);
   } else if (savedVersion && validOptions.includes(savedVersion)) {
+    initialVersion = savedVersion;
     selector.value = savedVersion;
-    switchVersion(savedVersion);
   }
+
+  // Initialize: hide all non-active versions on page load
+  switchVersion(initialVersion);
 });
