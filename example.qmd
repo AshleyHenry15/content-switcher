@@ -35,7 +35,7 @@ print(data.head())
 :::
 
 ::: {.content-switcher version="v2.0"}
-### version 2.0 example {.unlisted}
+## version 2.0 example {.unlisted}
 
 This is a test for searching. I
 Use readr to read CSV data:
