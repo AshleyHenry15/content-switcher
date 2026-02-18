@@ -83,7 +83,9 @@ data <- read_csv('data.csv')
 :::
 ````
 
-**Note:** Add `{.unlisted}` to headings to exclude them from the table of contents. Use level 2 headings (`##`) for content that should be searchable as separate entries (see Limitations section for details).
+**Important:** Always add `{.unlisted}` to headings inside content-switcher blocks to exclude them from the table of contents. Without this, the TOC will show headings for all versions simultaneously, even though only one version is visible at a time, leading to confusing TOC behavior.
+
+**Tip:** Use level 2 headings (`##`) for content blocks that should be individually searchable (see Limitations section for details about search indexing).
 
 ### Inline Content Switching
 
@@ -165,7 +167,7 @@ window.addEventListener('content-switcher:changed', function(event) {
 
 ## Limitations
 
-- **Table of Contents**: If you want to hide headings from the table of contents, you can manually add the `{.unlisted}` class to headings inside content-switcher blocks. This prevents the TOC from showing headings that aren't currently visible when switching between versions.
+- **Table of Contents**: Headings inside content-switcher blocks do not behave as expected in the table of contents. Quarto's TOC system cannot dynamically update to show only the currently visible version's headings. **You should always add `{.unlisted}` to headings inside content-switcher blocks** to prevent the TOC from displaying headings for all versions simultaneously, which creates a confusing user experience.
 
 - **Search Indexing**: Quarto's search feature only creates separate search entries for **level 2 headings (`##`)** and above. Level 3 headings (`###`) and below are included in their parent section's searchable text but won't appear as separate search results.
 
