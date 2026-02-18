@@ -18,7 +18,7 @@ A Quarto extension that enables dynamic content switching in HTML documents. Per
 Install the extension in your Quarto project:
 
 ```bash
-quarto add AshleyHenry15/content-switcher
+quarto add posit-dev/content-switcher
 ```
 
 Or install a specific version:
