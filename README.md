@@ -24,7 +24,7 @@ quarto add AshleyHenry15/content-switcher
 Or install a specific version:
 
 ```bash
-quarto add AshleyHenry15/content-switcher@v0.1.0
+quarto add posit-dev/content-switcher@v0.1.0
 ```
 
 This will install the extension under the `_extensions` subdirectory of your project. If you're using version control, you'll want to check in this directory.
