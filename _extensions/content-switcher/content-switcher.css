@@ -79,7 +79,7 @@ span.content-switcher:not(.content-switcher-hidden) {
   background-color: #1C2F3D; /*Mix of Posit Dark Blue 2 and Dark Blue 3*/
   border: 1px solid #213D4F;
   border-radius: 16px;
-  padding: .25rem 1rem .25rem 1rem;
+  padding: .75rem 1rem .75rem 1rem;
 }
 
 .quarto-dark span.content-switcher:not(.content-switcher-hidden) {
